@@ -1,5 +1,7 @@
 <?php
 
+namespace Bigpoint;
+
 class CookiePersistence implements PersistenceInterface
 {
     /**
@@ -20,7 +22,8 @@ class CookiePersistence implements PersistenceInterface
      * (non-PHPdoc)
      * @see PersistenceInterface::set()
      */
-    public function set($key, $value) {
+    public function set($key, $value)
+    {
         // TODO Auto-generated method stub
     }
 
@@ -28,7 +31,8 @@ class CookiePersistence implements PersistenceInterface
      * (non-PHPdoc)
      * @see PersistenceInterface::get()
      */
-    public function get($key) {
+    public function get($key)
+    {
         // TODO Auto-generated method stub
     }
 
@@ -36,7 +40,8 @@ class CookiePersistence implements PersistenceInterface
      * (non-PHPdoc)
      * @see PersistenceInterface::delete()
      */
-    public function delete($key) {
+    public function delete($key)
+    {
         // TODO Auto-generated method stub
     }
 
@@ -44,7 +49,8 @@ class CookiePersistence implements PersistenceInterface
      * (non-PHPdoc)
      * @see PersistenceInterface::flush()
      */
-    public function flush() {
+    public function flush()
+    {
         // TODO Auto-generated method stub
     }
 }

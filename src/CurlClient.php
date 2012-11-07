@@ -1,11 +1,15 @@
 <?php
 
+namespace Bigpoint;
+
 class CurlClient extends HttpClient
 {
-	/* (non-PHPdoc)
+    /**
+     * (non-PHPdoc)
      * @see ClientInterface::send()
      */
-    public function send() {
+    public function send()
+    {
         // TODO Auto-generated method stub
     }
 }
