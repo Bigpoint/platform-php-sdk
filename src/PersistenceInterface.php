@@ -1,5 +1,7 @@
 <?php
 
+namespace Bigpoint;
+
 interface PersistenceInterface
 {
     public function set($key, $value);

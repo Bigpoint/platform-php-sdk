@@ -1,5 +1,7 @@
 <?php
 
+namespace Bigpoint;
+
 class Oauth2Client
 {
     /**
@@ -33,11 +35,6 @@ class Oauth2Client
     }
 
     public function getAccessToken()
-    {
-        // TODO implementation
-    }
-
-    public function refreshAccessToken()
     {
         // TODO implementation
     }
