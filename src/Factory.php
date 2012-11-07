@@ -10,6 +10,11 @@ class Factory
     private $environment;
 
     /**
+     * @var Configuration
+     */
+    private $configuration;
+
+    /**
      * Create the Environment.
      *
      * @return Environment
@@ -51,16 +56,30 @@ class Factory
     }
 
     /**
+     * Create a Configuration.
+     *
+     * @return Configuration
+     */
+    private function createConfiguration($config)
+    {
+        if (null === $this->configuration) {
+            $this->configuration = new Configuration($config);
+        }
+        return $this->configuration;
+    }
+
+    /**
      * Create an Oauth2Client.
      *
-     * @var Oauth2Client
+     * @return Oauth2Client
      */
-    private function createOauth2Client()
+    private function createOauth2Client($config)
     {
         return new Oauth2Client(
             $this->createEnvironment(),
             $this->createCookiePersistence(),
-            $this->createHttpClient()
+            $this->createHttpClient(),
+            $this->createConfiguration($config)
         );
     }
 
@@ -72,8 +91,9 @@ class Factory
     public function createApi(array $config)
     {
         return new Api(
+            $this->createOauth2Client($config),
             $this->createHttpClient(),
-            $config
+            $this->createConfiguration($config)
         );
     }
 }

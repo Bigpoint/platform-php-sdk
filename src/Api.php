@@ -10,11 +10,6 @@ class Api
     const VERSION = 'PROTOTYPE';
 
     /**
-     * @var string
-     */
-    const BASE_URL = 'https://api-dev.bigpoint.net/';
-
-    /**
      * @var Oauth2Client
      */
     private $oauth2Client;
@@ -25,30 +20,23 @@ class Api
     private $httpClient;
 
     /**
-     * @var string
+     * @var Configuration
      */
-    private $clienId;
-
-    /**
-     * @var string
-     */
-    private $clienSecret;
+    private $configuration;
 
     /**
      * @param Oauth2Client $oauth2Client
      * @param HttpClient $httpClient
-     * @param array $config
+     * @param Configuration $configuration
      */
     public function __construct(
         Oauth2Client $oauth2Client,
         HttpClient $httpClient,
-        array $config
+        Configuration $configuration
     ) {
         $this->oauth2Client = $oauth2Client;
         $this->httpClient = $httpClient;
-
-        $this->clienId = $config['client_id'];
-        $this->clienSecret = $config['client_secret'];
+        $this->configuration = $configuration;
     }
 
     public function call($resource, $method = 'GET', $params = array())
