@@ -15,6 +15,11 @@ class Factory
     private $configuration;
 
     /**
+     * @var SessionAdapter
+     */
+    private $sessionAdapter;
+
+    /**
      * Create the Environment.
      *
      * @return Environment
@@ -31,14 +36,25 @@ class Factory
     }
 
     /**
+     * Create the SessionAdapter.
+     */
+    private function createSessionAdapter()
+    {
+        if (null === $this->sessionAdapter) {
+            $this->sessionAdapter = new SessionAdapter();
+        }
+        return $this->sessionAdapter;
+    }
+
+    /**
      * Create a Persistence.
      *
-     * @return CookiePersistence
+     * @return SessionPersistence
      */
-    private function createCookiePersistence()
+    private function createSessionPersistence()
     {
-        return new CookiePersistence(
-            $this->createEnvironment()
+        return new SessionPersistence(
+            $this->createSessionAdapter()
         );
     }
 
@@ -77,7 +93,7 @@ class Factory
     {
         return new Oauth2Client(
             $this->createEnvironment(),
-            $this->createCookiePersistence(),
+            $this->createSessionPersistence(),
             $this->createHttpClient(),
             $this->createConfiguration($config)
         );
