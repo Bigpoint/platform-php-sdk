@@ -6,7 +6,7 @@ interface PersistenceInterface
 {
     public function set($key, $value);
 
-    public function get($key);
+    public function get($key, $default = null);
 
     public function delete($key);
 
