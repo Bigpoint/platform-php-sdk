@@ -7,7 +7,7 @@ class Oauth2Client
     /**
      * @var string
      */
-    const KEY_PREFIX = 'tbbp_';
+    const ACCESS_TOKEN_KEY = 'access_token';
 
     /**
      * @var Environment
@@ -47,16 +47,37 @@ class Oauth2Client
         $this->configuration = $configuration;
     }
 
+    /**
+     * @param string $code
+     */
+    public function fetchAccessTokenFromCode($code)
+    {
+        // TODO replace dummy implementation
+        return mt_rand(1, 100000);
+    }
+
     public function getAccessToken()
     {
-        // TODO implementation
+        $accessToken = $this->persistence->get(ACCESS_TOKEN_KEY, null);
 
-        // if not in persistence
+        if (null !== $accessToken) {
+            return $accessToken;
+        }
 
-        // then try to fetch code
+        $code = $this->environment->getGetParam('code', null);
 
-        // fetch token from code
+        if (null === $code) {
+            return null;
+        }
 
-        // otherwise return null
+        $accessToken = $this->fetchAccessTokenFromCode($code);
+
+        if (null === $accessToken) {
+            return null;
+        }
+
+        $this->persistence->set(ACCESS_TOKEN_KEY, $accessToken);
+
+        return $accessToken;
     }
 }

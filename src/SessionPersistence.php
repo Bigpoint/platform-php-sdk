@@ -38,16 +38,16 @@ class SessionPersistence implements PersistenceInterface
      */
     public function set($key, $value)
     {
-        // TODO Auto-generated method stub
+        $_SESSION[$key] = $value;
     }
 
     /**
      * (non-PHPdoc)
      * @see PersistenceInterface::get()
      */
-    public function get($key)
+    public function get($key, $default = null)
     {
-        // TODO Auto-generated method stub
+        return isset($_SESSION[$key]) ? $_SESSION[$key] : $default;
     }
 
     /**
@@ -56,7 +56,9 @@ class SessionPersistence implements PersistenceInterface
      */
     public function delete($key)
     {
-        // TODO Auto-generated method stub
+        if (true === isset($_SESSION[$key])) {
+            unset($_SESSION[$key]);
+        }
     }
 
     /**
@@ -65,6 +67,6 @@ class SessionPersistence implements PersistenceInterface
      */
     public function flush()
     {
-        // TODO Auto-generated method stub
+        $_SESSION = array();
     }
 }
