@@ -7,12 +7,12 @@ abstract class HttpClient
     /**
      * @var RequestInterface
      */
-    private $request;
+    protected $request;
 
     /**
      * @var ResponseInterface
      */
-    private $response;
+    protected $response;
 
     /**
      * @param Request $request
@@ -29,5 +29,5 @@ abstract class HttpClient
     /**
      * @return Response
      */
-    abstract public function send();
+    abstract public function send($uri, $method = 'GET', $params = array());
 }
