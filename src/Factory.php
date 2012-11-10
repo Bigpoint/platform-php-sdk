@@ -59,6 +59,16 @@ class Factory
     }
 
     /**
+     * Create a CurlAdapter.
+     *
+     * @return CurlAdapter
+     */
+    private function createCurlAdatper()
+    {
+        return new CurlAdapter();
+    }
+
+    /**
      * Create a HttpClient.
      *
      * @return HttpClient
@@ -67,7 +77,8 @@ class Factory
     {
         return new CurlClient(
             new Request(),
-            new Response()
+            new Response(),
+            new CurlAdapter()
         );
     }
 
