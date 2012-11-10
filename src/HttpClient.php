@@ -27,7 +27,11 @@ abstract class HttpClient
     }
 
     /**
+     * @param string $uri
+     * @param string $method
+     * @param array $params
+     *
      * @return Response
      */
-    abstract public function send($uri, $method = 'GET', $params = array());
+    abstract public function send($uri, $method = 'GET', array $params = array());
 }
