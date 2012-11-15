@@ -32,16 +32,4 @@ class CurlClient extends HttpClient
     {
         // TODO Auto-generated method stub
     }
-
-    /**
-     * Generate URL-encoded query string.
-     *
-     * @param array $queryData
-     *
-     * @return string A URL-encoded string.
-     */
-    public function buildQuery(array $queryData)
-    {
-        return http_build_query($queryData, '', '&');
-    }
 }

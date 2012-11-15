@@ -56,6 +56,11 @@ class Oauth2Client
         return mt_rand(1, 100000);
     }
 
+    /**
+     * Return an access token.
+     *
+     * @return string|null
+     */
     public function getAccessToken()
     {
         $accessToken = $this->persistence->get(ACCESS_TOKEN_KEY, null);
