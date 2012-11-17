@@ -20,6 +20,11 @@ class Request
     private $payload = array();
 
     /**
+     * @var array
+     */
+    private $headers = array();
+
+    /**
      * Set the method.
      *
      * @param string $method
@@ -50,6 +55,17 @@ class Request
     }
 
     /**
+     * Set a header entry.
+     *
+     * @param string $name
+     * @param string $value
+     */
+    public function setHeader($name, $value)
+    {
+        $this->headers[$name] = $value;
+    }
+
+    /**
      * Clear the properties.
      */
     public function flush()
@@ -57,6 +73,7 @@ class Request
         $this->method = null;
         $this->uri = null;
         $this->payload = array();
+        $this->headers = array();
     }
 
     /**
@@ -85,5 +102,15 @@ class Request
     public function getBody()
     {
         return http_build_query($this->payload, '', '&');
+    }
+
+    /**
+     * Get the headers.
+     *
+     * @return array
+     */
+    public function getHeaders()
+    {
+        return $this->headers;
     }
 }
