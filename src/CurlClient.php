@@ -28,6 +28,29 @@ class CurlClient extends HttpClient
      */
     public function send(Request $request)
     {
+        $ch = $this->curlAdapter->init($request->getUri());
+
+        $this->curlAdapter->setOption(
+            $ch,
+            $this->curlAdapter->getConstant('CUSTOMREQUEST'),
+            $request->getMethod()
+        );
+
+        $headers = array();
+        foreach ($request->getHeaders() as $name => $value) {
+            $headers[] = $name . ': ' . $value;
+        }
+        $this->curlAdapter->setOption(
+            $ch,
+            $this->curlAdapter->getConstant('HTTPHEADER'),
+            $headers
+        );
+
+        $this->curlAdapter->setOption(
+            $ch,
+            $this->curlAdapter->getConstant('RETURNTRANSFER'),
+            1
+        );
         // TODO Auto-generated method stub
     }
 }

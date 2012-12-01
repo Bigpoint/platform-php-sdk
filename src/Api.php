@@ -47,8 +47,21 @@ class Api
         $this->configuration = $configuration;
     }
 
+    public function prepareRequest()
+    {
+        $this->request->setHeader('Accept', 'application/json');
+        $this->request->setHeader(
+            'Content-type',
+            'application/json;version=' . self::VERSION
+        );
+    }
+
     public function call($resource, $method = 'GET', $params = array())
     {
-        // TODO implement
+        $this->prepareRequest();
+
+        $this->request->setUri(
+            $this->configuration->getBaseUri() . $resource
+        );
     }
 }
