@@ -7,7 +7,7 @@ class Configuration
     /**
      * @var string
      */
-    const BASE_URL = 'https://api-dev.bigpoint.net/';
+    const BASE_URI = 'https://api-dev.bigpoint.net/';
 
     /**
      * @var string
@@ -32,9 +32,9 @@ class Configuration
     /**
      * @return string
      */
-    public function getBaseUrl()
+    public function getBaseUri()
     {
-        return static::BASE_URL;
+        return static::BASE_URI;
     }
 
     /**
