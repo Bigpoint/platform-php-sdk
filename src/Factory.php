@@ -10,14 +10,14 @@ class Factory
     private $environment;
 
     /**
-     * @var Configuration
-     */
-    private $configuration;
-
-    /**
      * @var SessionAdapter
      */
     private $sessionAdapter;
+
+    /**
+     * @var Configuration
+     */
+    private $configuration;
 
     /**
      * Create the Environment.
@@ -33,6 +33,26 @@ class Factory
             );
         }
         return $this->environment;
+    }
+
+    /**
+     * Create a Request.
+     *
+     * @return Request
+     */
+    private function createRequest()
+    {
+        return new Request();
+    }
+
+    /**
+     * Create a Response.
+     *
+     * @return Response
+     */
+    private function createResponse()
+    {
+        return new Response();
     }
 
     /**
@@ -76,7 +96,6 @@ class Factory
     private function createHttpClient()
     {
         return new CurlClient(
-            new Request(),
             new Response(),
             new CurlAdapter()
         );
@@ -106,6 +125,7 @@ class Factory
             $this->createEnvironment(),
             $this->createSessionPersistence(),
             $this->createHttpClient(),
+            $this->createRequest(),
             $this->createConfiguration($config)
         );
     }

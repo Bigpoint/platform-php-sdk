@@ -25,6 +25,11 @@ class Oauth2Client
     private $httpClient;
 
     /**
+     * @var Request
+     */
+    private $request;
+
+    /**
      * @var Configuration
      */
     private $configuration;
@@ -33,17 +38,20 @@ class Oauth2Client
      * @param Environment $environment
      * @param PersistenceInterface $persistence
      * @param HttpClient $httpClient
+     * @param Request $request
      * @param Configuration $configuration
      */
     public function __construct(
         Environment $environment,
         PersistenceInterface $persistence,
         HttpClient $httpClient,
+        Request $request,
         Configuration $configuration
     ) {
         $this->environment = $environment;
         $this->persistence = $persistence;
         $this->httpClient = $httpClient;
+        $this->request = $request;
         $this->configuration = $configuration;
     }
 
