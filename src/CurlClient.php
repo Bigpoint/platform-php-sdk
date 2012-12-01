@@ -10,25 +10,23 @@ class CurlClient extends HttpClient
     private $curlAdapter;
 
     /**
-     * @param Request $request
      * @param Response $response
      * @param CurlAdapter $curlAdapter
      */
     public function __construct(
-        Request $request,
         Response $response,
         CurlAdapter $curlAdapter
     ) {
-        parent::__construct($request, $response);
+        parent::__construct($response);
 
         $this->curlAdapter = $curlAdapter;
     }
 
     /**
      * (non-PHPdoc)
-     * @see ClientInterface::send()
+     * @see HttpClient::send()
      */
-    public function send($uri, $method = 'GET', array $params = array())
+    public function send(Request $request)
     {
         // TODO Auto-generated method stub
     }
