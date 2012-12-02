@@ -1,5 +1,7 @@
 <?php
 
+namespace Bigpoint;
+
 class Environment
 {
     /**

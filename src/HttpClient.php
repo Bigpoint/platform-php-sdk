@@ -1,32 +1,37 @@
 <?php
 
+namespace Bigpoint;
+
 abstract class HttpClient
 {
     /**
-     * @var RequestInterface
+     * @var Response
      */
-    private $request;
+    protected $response;
 
     /**
-     * @var ResponseInterface
-     */
-    private $response;
-
-    /**
-     * @param Request $request
      * @param Response $response
-     * @param array $queryParameter
      */
     public function __construct(
-        Request $request,
         Response $response
-    ){
-        $this->request = $request;
+    ) {
         $this->response = $response;
     }
 
     /**
+     * Generate URL-encoded query string.
+     */
+    public function buildQuery($data)
+    {
+        return http_build_query($data, '', '&');
+    }
+
+    /**
+     * Send a request.
+     *
+     * @param Request $request
+     *
      * @return Response
      */
-    abstract public function send();
+    abstract public function send(Request $request);
 }
