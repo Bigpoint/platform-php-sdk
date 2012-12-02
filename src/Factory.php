@@ -1,11 +1,23 @@
 <?php
 
+namespace Bigpoint;
+
 class Factory
 {
     /**
      * @var Environment
      */
     private $environment;
+
+    /**
+     * @var SessionAdapter
+     */
+    private $sessionAdapter;
+
+    /**
+     * @var Configuration
+     */
+    private $configuration;
 
     /**
      * Create the Environment.
@@ -24,15 +36,56 @@ class Factory
     }
 
     /**
+     * Create a Request.
+     *
+     * @return Request
+     */
+    private function createRequest()
+    {
+        return new Request();
+    }
+
+    /**
+     * Create a Response.
+     *
+     * @return Response
+     */
+    private function createResponse()
+    {
+        return new Response();
+    }
+
+    /**
+     * Create the SessionAdapter.
+     */
+    private function createSessionAdapter()
+    {
+        if (null === $this->sessionAdapter) {
+            $this->sessionAdapter = new SessionAdapter();
+        }
+        return $this->sessionAdapter;
+    }
+
+    /**
      * Create a Persistence.
      *
-     * @return CookiePersistence
+     * @return SessionPersistence
      */
-    private function createCookiePersistence()
+    private function createSessionPersistence()
     {
-        return new CookiePersistence(
-            $this->createEnvironment()
+        return new SessionPersistence(
+            $this->createSessionAdapter()
         );
+    }
+
+    /**
+     * Create a CurlAdapter.
+     *
+     * @return CurlAdapter
+     */
+    private function createCurlAdatper()
+    {
+        return new CurlAdapter();
     }
 
     /**
@@ -43,22 +96,37 @@ class Factory
     private function createHttpClient()
     {
         return new CurlClient(
-            new Request(),
-            new Response()
+            new Response(),
+            new CurlAdapter()
         );
+    }
+
+    /**
+     * Create a Configuration.
+     *
+     * @return Configuration
+     */
+    private function createConfiguration($config)
+    {
+        if (null === $this->configuration) {
+            $this->configuration = new Configuration($config);
+        }
+        return $this->configuration;
     }
 
     /**
      * Create an Oauth2Client.
      *
-     * @var Oauth2Client
+     * @return Oauth2Client
      */
-    private function createOauth2Client()
+    private function createOauth2Client($config)
     {
         return new Oauth2Client(
             $this->createEnvironment(),
-            $this->createCookiePersistence(),
-            $this->createHttpClient()
+            $this->createSessionPersistence(),
+            $this->createHttpClient(),
+            $this->createRequest(),
+            $this->createConfiguration($config)
         );
     }
 
@@ -70,8 +138,10 @@ class Factory
     public function createApi(array $config)
     {
         return new Api(
+            $this->createOauth2Client($config),
             $this->createHttpClient(),
-            $config
+            $this->createRequest(),
+            $this->createConfiguration($config)
         );
     }
 }

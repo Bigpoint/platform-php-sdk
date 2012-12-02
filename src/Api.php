@@ -1,5 +1,7 @@
 <?php
 
+namespace Bigpoint;
+
 class Api
 {
     /**
@@ -8,36 +10,64 @@ class Api
     const VERSION = 'PROTOTYPE';
 
     /**
+     * @var Oauth2Client
+     */
+    private $oauth2Client;
+
+    /**
      * @var HttpClient
      */
     private $httpClient;
 
     /**
-     * @var string
+     * @var Request
      */
-    private $clienId;
+    private $request;
 
     /**
-     * @var string
+     * @var Configuration
      */
-    private $clienSecret;
+    private $configuration;
 
     /**
+     * @param Oauth2Client $oauth2Client
      * @param HttpClient $httpClient
-     * @param array $config
+     * @param Request $request
+     * @param Configuration $configuration
      */
     public function __construct(
+        Oauth2Client $oauth2Client,
         HttpClient $httpClient,
-        array $config
+        Request $request,
+        Configuration $configuration
     ) {
+        $this->oauth2Client = $oauth2Client;
         $this->httpClient = $httpClient;
+        $this->request = $request;
+        $this->configuration = $configuration;
+    }
 
-        $this->clienId = $config['client_id'];
-        $this->clienSecret = $config['client_secret'];
+    public function prepareRequest()
+    {
+        $this->request->setHeader('Accept', 'application/json');
+        $this->request->setHeader(
+            'Content-type',
+            'application/json;version=' . self::VERSION
+        );
     }
 
     public function call($resource, $method = 'GET', $params = array())
     {
-        // TODO implement
+        $this->prepareRequest();
+
+        $this->request->setUri(
+            $this->configuration->getBaseUri() . $resource
+        );
+
+        $this->request->setMethod($method);
+
+        $this->request->setPayload(json_encode($params));
+
+        return $this->httpClient->send($this->request);
     }
 }
