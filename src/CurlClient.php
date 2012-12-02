@@ -23,6 +23,20 @@ class CurlClient extends HttpClient
     }
 
     /**
+     * A callback function specified by CURLOPT_HEADERFUNCTION.
+     *
+     * @param resource $ch The cURL resource.
+     * @param string $headerLine The header data to be written.
+     *
+     * @return int The number of bytes written.
+     */
+    public function headerCallback($ch, $headerLine)
+    {
+        $this->response->setHeader($headerLine);
+        return strlen($headerLine);
+    }
+
+    /**
      * (non-PHPdoc)
      * @see HttpClient::send()
      */
@@ -32,7 +46,7 @@ class CurlClient extends HttpClient
 
         $this->curlAdapter->setOption(
             $ch,
-            $this->curlAdapter->getConstant('CUSTOMREQUEST'),
+            $this->curlAdapter->getOptConstant('CUSTOMREQUEST'),
             $request->getMethod()
         );
 
@@ -42,15 +56,39 @@ class CurlClient extends HttpClient
         }
         $this->curlAdapter->setOption(
             $ch,
-            $this->curlAdapter->getConstant('HTTPHEADER'),
+            $this->curlAdapter->getOptConstant('HTTPHEADER'),
             $headers
         );
 
         $this->curlAdapter->setOption(
             $ch,
-            $this->curlAdapter->getConstant('RETURNTRANSFER'),
+            $this->curlAdapter->getOptConstant('POSTFIELDS'),
+            $request->getPayload()
+        );
+
+        $this->curlAdapter->setOption(
+            $ch,
+            $this->curlAdapter->getOptConstant('RETURNTRANSFER'),
             1
         );
-        // TODO Auto-generated method stub
+
+        $this->curlAdapter->setOption(
+            $ch,
+            $this->curlAdapter->getOptConstant('HEADERFUNCTION'),
+            array($this, 'headerCallback')
+        );
+
+        $this->response->flush();
+        $this->response->setContent($this->curlAdapter->exec($ch));
+        $this->response->setStatusCode(
+            $this->curlAdapter->getInfo(
+                $ch,
+                $this->curlAdapter->getInfoConstant('HTTP_CODE')
+            )
+        );
+
+        $this->curlAdapter->close($ch);
+
+        return clone($this->response);
     }
 }

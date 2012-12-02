@@ -15,9 +15,9 @@ class Request
     private $uri;
 
     /**
-     * @var array
+     * @var misc
      */
-    private $payload = array();
+    private $payload;
 
     /**
      * @var array
@@ -45,13 +45,13 @@ class Request
     }
 
     /**
-     * Set the parameters.
+     * Set the payload.
      *
-     * @param array $parameters
+     * @param misc $payload
      */
-    public function setParameters(array $parameters)
+    public function setPayload($payload)
     {
-        $this->payload = $parameters;
+        $this->payload = $payload;
     }
 
     /**
@@ -72,7 +72,7 @@ class Request
     {
         $this->method = null;
         $this->uri = null;
-        $this->payload = array();
+        $this->payload = null;
         $this->headers = array();
     }
 
@@ -97,11 +97,11 @@ class Request
     }
 
     /**
-     * Get the body.
+     * Get the payload.
      */
-    public function getBody()
+    public function getPayload()
     {
-        return http_build_query($this->payload, '', '&');
+        return $this->payload;
     }
 
     /**
