@@ -1,5 +1,7 @@
 <?php
 
+namespace Bigpoint;
+
 class Response
 {
     /**
@@ -40,12 +42,11 @@ class Response
     /**
      * Set a header entry.
      *
-     * @param string $name
-     * @param string $value
+     * @param string $header
      */
-    public function setHeader($name, $value)
+    public function setHeader($header)
     {
-        $this->headers[$name] = $value;
+        $this->headers[] = $header;
     }
 
     /**
