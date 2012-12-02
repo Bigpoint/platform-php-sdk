@@ -140,6 +140,7 @@ class Factory
         return new Api(
             $this->createOauth2Client($config),
             $this->createHttpClient(),
+            $this->createRequest(),
             $this->createConfiguration($config)
         );
     }

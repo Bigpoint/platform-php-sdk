@@ -63,5 +63,11 @@ class Api
         $this->request->setUri(
             $this->configuration->getBaseUri() . $resource
         );
+
+        $this->request->setMethod($method);
+
+        $this->request->setPayload(json_encode($params));
+
+        return $this->httpClient->send($this->request);
     }
 }

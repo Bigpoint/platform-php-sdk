@@ -23,9 +23,21 @@ class CurlAdapter
      *
      * @return int
      */
-    public function getConstant($name)
+    public function getOptConstant($name)
     {
         return constant('CURLOPT_' . $name);
+    }
+
+    /**
+     * Returns the value of a CURLINFO_XXX.
+     *
+     * @param string $name The name of the constant without prefix CURLINFO_.
+     *
+     * @return int
+     */
+    public function getInfoConstant($name)
+    {
+        return constant('CURLINFO_' . $name);
     }
 
     /**
@@ -64,5 +76,16 @@ class CurlAdapter
     public function close($ch)
     {
         return curl_close($ch);
+    }
+
+    /**
+     * Get information regarding a specific transfer.
+     *
+     * @param resource $ch A cURL handle.
+     * @param int One of the CURLINFO_XXX constant.
+     */
+    public function getInfo($ch, $opt = 0)
+    {
+        return curl_getinfo($ch, $opt);
     }
 }

@@ -19,6 +19,14 @@ abstract class HttpClient
     }
 
     /**
+     * Generate URL-encoded query string.
+     */
+    public function buildQuery($data)
+    {
+        return http_build_query($data, '', '&');
+    }
+
+    /**
      * Send a request.
      *
      * @param Request $request
