@@ -13,7 +13,7 @@ $config = array(
     'client_secret' => 'CLIENTSECRET',
 );
 
-$factory = new Factory();
+$factory = new Bigpoint\Factory();
 
 $api = $factroy->createApi($config);
 
