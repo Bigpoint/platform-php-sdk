@@ -31,6 +31,8 @@ class Environment
      *
      * @param string $key
      * @param mixed $default
+     *
+     * @return string
      */
     public function getGetParam($key, $default = null)
     {
@@ -42,9 +44,27 @@ class Environment
      *
      * @param string $key
      * @param mixed $default
+     *
+     * @return string
      */
     public function getServerParam($key, $default = null)
     {
         return isset($this->server[$key]) ? $this->server[$key] : $default;
+    }
+
+    /**
+     * Get the current URI.
+     *
+     * @return string
+     */
+    public function getCurrentURI()
+    {
+        $protocol = $this->getServerParam('HTTPS', null);
+        $protocol = (null === $protocol) ? 'http://' : 'https://';
+
+        $host = $this->getServerParam('HTTP_HOST');
+        $path = $this->getServerParam('REQUEST_URI');
+
+        return $protocol . $host . $path;
     }
 }

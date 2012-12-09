@@ -109,7 +109,10 @@ class Factory
     private function createConfiguration($config)
     {
         if (null === $this->configuration) {
-            $this->configuration = new Configuration($config);
+            $this->configuration = new Configuration(
+                $this->createEnvironment(),
+                $config
+            );
         }
         return $this->configuration;
     }
