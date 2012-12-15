@@ -10,6 +10,11 @@ class Oauth2Client
     const ACCESS_TOKEN_KEY = 'access_token';
 
     /**
+     * @var string
+     */
+    const TOKEN_ENDPOINT = 'oauth/token';
+
+    /**
      * @var Environment
      */
     private $environment;
@@ -55,13 +60,41 @@ class Oauth2Client
         $this->configuration = $configuration;
     }
 
+    public function prepareRequest()
+    {
+        $this->request->setHeader('Accept', 'application/json');
+        $this->request->setHeader(
+            'Content-type',
+            'application/x-www-form-urlencoded'
+        );
+    }
+
     /**
      * @param string $code
+     * @return Response
      */
-    public function fetchAccessTokenFromCode($code)
+    public function fetchAccessTokenResponseFromCode($code)
     {
-        // TODO replace dummy implementation
-        return mt_rand(1, 100000);
+        $this->prepareRequest();
+
+        $query = $this->httpClient->buildQuery(
+            array(
+                'client_id' => $this->configuration->getClientId(),
+                'redirect_uri' => $this->configuration->getRedirectURI(),
+                'client_secret' => $this->configuration->getClientSecret(),
+                'grant_type' => 'authorization_code',
+                'code' => $code
+            )
+        );
+
+        $this->request->setUri(
+            $this->configuration->getBaseUri()
+            . self::TOKEN_ENDPOINT . '?' . $query
+        );
+
+        $this->request->setMethod('GET');
+
+        return $this->httpClient->send($this->request);
     }
 
     /**
@@ -71,7 +104,7 @@ class Oauth2Client
      */
     public function getAccessToken()
     {
-        $accessToken = $this->persistence->get(ACCESS_TOKEN_KEY, null);
+        $accessToken = $this->persistence->get(self::ACCESS_TOKEN_KEY, null);
 
         if (null !== $accessToken) {
             return $accessToken;
@@ -83,13 +116,15 @@ class Oauth2Client
             return null;
         }
 
-        $accessToken = $this->fetchAccessTokenFromCode($code);
+        $response = $this->fetchAccessTokenResponseFromCode($code);
 
-        if (null === $accessToken) {
+        if ((null === $response) || (200 != $response->getStatusCode())) {
             return null;
         }
 
-        $this->persistence->set(ACCESS_TOKEN_KEY, $accessToken);
+        // TODO consider expiration
+        $accessToken = json_decode($response->getContent())->value;
+        $this->persistence->set(self::ACCESS_TOKEN_KEY, $accessToken);
 
         return $accessToken;
     }
