@@ -7,7 +7,8 @@ class Configuration
     /**
      * @var string
      */
-    const BASE_URI = 'https://api-dev.bigpoint.net/';
+    //const BASE_URI = 'https://api-dev.bigpoint.net/';
+    const BASE_URI = 'http://10.189.175.89:40888/';
 
     /**
      * @var Environment

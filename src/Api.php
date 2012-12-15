@@ -61,7 +61,8 @@ class Api
         $this->prepareRequest();
 
         $this->request->setUri(
-            $this->configuration->getBaseUri() . $resource
+            $this->configuration->getBaseUri()
+            . $resource . '?' . $this->oauth2Client->getAccessToken()
         );
 
         $this->request->setMethod($method);
