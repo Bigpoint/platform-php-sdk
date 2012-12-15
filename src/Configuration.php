@@ -7,7 +7,13 @@ class Configuration
     /**
      * @var string
      */
-    const BASE_URI = 'https://api-dev.bigpoint.net/';
+    //const BASE_URI = 'https://api-dev.bigpoint.net/';
+    const BASE_URI = 'http://10.189.175.89:40888/';
+
+    /**
+     * @var Environment
+     */
+    private $environment;
 
     /**
      * @var string
@@ -20,13 +26,25 @@ class Configuration
     private $clientSecret;
 
     /**
+     * @var string
+     */
+    private $redirectUri;
+
+    /**
+     * @param Environment $environment
      * @param array $config
      */
     public function __construct(
+        Environment $environment,
         array $config
     ) {
+        $this->environment = $environment;
         $this->clientId = $config['client_id'];
         $this->clientSecret = $config['client_secret'];
+
+        if (true === isset($config['redirect_uri'])) {
+            $this->redirectUri = $config['redirect_uri'];
+        }
     }
 
     /**
@@ -51,5 +69,17 @@ class Configuration
     public function getClientSecret()
     {
         return $this->clientSecret;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRedirectURI()
+    {
+        if (null === $this->redirectUri) {
+            return $this->environment->getCurrentURI();
+        } else {
+            $this->redirectUri;
+        }
     }
 }

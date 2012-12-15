@@ -31,6 +31,8 @@ class Environment
      *
      * @param string $key
      * @param mixed $default
+     *
+     * @return string
      */
     public function getGetParam($key, $default = null)
     {
@@ -42,9 +44,39 @@ class Environment
      *
      * @param string $key
      * @param mixed $default
+     *
+     * @return string
      */
     public function getServerParam($key, $default = null)
     {
         return isset($this->server[$key]) ? $this->server[$key] : $default;
+    }
+
+    /**
+     * Get the request URI without the parameters.
+     *
+     * @return string
+     */
+    public function getDocumentURI()
+    {
+        $path = $this->getServerParam('REQUEST_URI');
+        $path = parse_url($path, PHP_URL_PATH);
+        return (true === empty($path)) ? '' : $path;
+    }
+
+    /**
+     * Get the current URI.
+     *
+     * @return string
+     */
+    public function getCurrentURI()
+    {
+        // TODO will not work with IIS using ISAPI
+        $protocol = $this->getServerParam('HTTPS', null);
+        $protocol = (true === empty($protocol)) ? 'http://' : 'https://';
+
+        $host = $this->getServerParam('HTTP_HOST');
+
+        return $protocol . $host . $this->getDocumentURI();
     }
 }
