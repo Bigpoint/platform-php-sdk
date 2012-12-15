@@ -53,18 +53,30 @@ class Environment
     }
 
     /**
+     * Get the request URI without the parameters.
+     *
+     * @return string
+     */
+    public function getDocumentURI()
+    {
+        $path = $this->getServerParam('REQUEST_URI');
+        $path = parse_url($path, PHP_URL_PATH);
+        return (true === empty($path)) ? '' : $path;
+    }
+
+    /**
      * Get the current URI.
      *
      * @return string
      */
     public function getCurrentURI()
     {
+        // TODO will not work with IIS using ISAPI
         $protocol = $this->getServerParam('HTTPS', null);
-        $protocol = (null === $protocol) ? 'http://' : 'https://';
+        $protocol = (true === empty($protocol)) ? 'http://' : 'https://';
 
         $host = $this->getServerParam('HTTP_HOST');
-        $path = $this->getServerParam('REQUEST_URI');
 
-        return $protocol . $host . $path;
+        return $protocol . $host . $this->getDocumentURI();
     }
 }
