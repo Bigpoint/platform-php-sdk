@@ -47,27 +47,41 @@ class Api
         $this->configuration = $configuration;
     }
 
-    public function prepareRequest()
-    {
-        $this->request->setHeader('Accept', 'application/json');
-        $this->request->setHeader(
-            'Content-type',
-            'application/json;version=' . self::VERSION
-        );
-    }
-
     public function call($resource, $method = 'GET', $params = array())
     {
-        $this->prepareRequest();
+        $method = strtoupper($method);
 
-        $this->request->setUri(
-            $this->configuration->getBaseUri()
-            . $resource . '?' . $this->oauth2Client->getAccessToken()
-        );
-
+        $this->request->setHeader('Accept', 'application/json');
         $this->request->setMethod($method);
 
-        $this->request->setPayload(json_encode($params));
+        // set content type
+        if (('GET' === $method) || ('POST' === $method)) {
+            $contentType
+                = 'application/x-www-form-urlencoded;version=' . self::VERSION;
+        } else {
+            $contentType
+                = 'application/json;version=' . self::VERSION;
+        }
+        $this->request->setHeader('Content-type', $contentType);
+
+        // set uri
+        $query = array(
+            'access_token' => $this->oauth2Client->getAccessToken()
+        );
+        if ('GET' === $method) {
+            $query = array_merge($query, $params);
+        }
+        $this->request->setUri(
+            $this->configuration->getBaseUri()
+            . $resource . '?' . $this->httpClient->buildQuery($query)
+        );
+
+        // set payload
+        if ('POST' === $method) {
+            $this->request->setPayload($this->httpClient->buildQuery($params));
+        } elseif (('GET' !== $method) && ('POST' !== $method)) {
+            $this->request->setPayload(json_encode($params));
+        }
 
         return $this->httpClient->send($this->request);
     }

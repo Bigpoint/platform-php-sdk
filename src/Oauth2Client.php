@@ -73,7 +73,7 @@ class Oauth2Client
      * @param string $code
      * @return Response
      */
-    public function fetchAccessTokenResponseFromCode($code)
+    public function requestAccessTokenByAuthorizationCode($code)
     {
         $this->prepareRequest();
 
@@ -98,6 +98,32 @@ class Oauth2Client
     }
 
     /**
+     * @return Response
+     */
+    public function requestAccessTokenByClientCredentials()
+    {
+        $this->prepareRequest();
+
+        $this->request->setUri(
+            $this->configuration->getBaseUri() . self::TOKEN_ENDPOINT
+        );
+
+        $this->request->setMethod('POST');
+
+        $payload = $this->httpClient->buildQuery(
+            array(
+                'client_id' => $this->configuration->getClientId(),
+                'client_secret' => $this->configuration->getClientSecret(),
+                'grant_type' => 'client_credentials'
+            )
+        );
+
+        $this->request->setPayload($payload);
+
+        return $this->httpClient->send($this->request);
+    }
+
+    /**
      * Return an access token.
      *
      * @return string|null
@@ -110,13 +136,17 @@ class Oauth2Client
             return $accessToken;
         }
 
-        $code = $this->environment->getGetParam('code', null);
-
-        if (null === $code) {
+        if ('authorization_code' === $this->configuration->getGrantType()) {
+            $code = $this->environment->getGetParam('code', null);
+            if (null === $code) {
+                return null;
+            }
+            $response = $this->requestAccessTokenByAuthorizationCode($code);
+        } elseif ('client_credentials' === $this->configuration->getGrantType()) {
+            $response = $this->requestAccessTokenByClientCredentials();
+        } else {
             return null;
         }
-
-        $response = $this->fetchAccessTokenResponseFromCode($code);
 
         if ((null === $response) || (200 != $response->getStatusCode())) {
             return null;
