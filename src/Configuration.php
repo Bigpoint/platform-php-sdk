@@ -28,6 +28,11 @@ class Configuration
     /**
      * @var string
      */
+    private $grantType;
+
+    /**
+     * @var string
+     */
     private $redirectUri;
 
     /**
@@ -41,6 +46,7 @@ class Configuration
         $this->environment = $environment;
         $this->clientId = $config['client_id'];
         $this->clientSecret = $config['client_secret'];
+        $this->grantType = $config['grant_type'];
 
         if (true === isset($config['redirect_uri'])) {
             $this->redirectUri = $config['redirect_uri'];
@@ -69,6 +75,14 @@ class Configuration
     public function getClientSecret()
     {
         return $this->clientSecret;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGrantType()
+    {
+        return $this->grantType;
     }
 
     /**
