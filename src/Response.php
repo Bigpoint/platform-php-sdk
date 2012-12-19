@@ -40,13 +40,14 @@ class Response
     }
 
     /**
-     * Set a header entry.
+     * Set a header field.
      *
-     * @param string $header
+     * @param string $field
+     * @param string $value
      */
-    public function setHeader($header)
+    public function setHeader($field, $value)
     {
-        $this->headers[] = $header;
+        $this->headers[$field] = $value;
     }
 
     /**
