@@ -47,14 +47,11 @@ class Api
         $this->configuration = $configuration;
     }
 
-    public function call($resource, $method = 'GET', $params = array())
+    /**
+     * @param string $method
+     */
+    protected function setContentType($method)
     {
-        $method = strtoupper($method);
-
-        $this->request->setHeader('Accept', 'application/json');
-        $this->request->setMethod($method);
-
-        // set content type
         if (('GET' === $method) || ('POST' === $method)) {
             $contentType
                 = 'application/x-www-form-urlencoded;version=' . self::VERSION;
@@ -63,8 +60,15 @@ class Api
                 = 'application/json;version=' . self::VERSION;
         }
         $this->request->setHeader('Content-type', $contentType);
+    }
 
-        // set uri
+    /**
+     * @param string $resource
+     * @param string $method
+     * @param array $params
+     */
+    protected function setUri($resource, $method, array $params)
+    {
         $query = array(
             'access_token' => $this->oauth2Client->getAccessToken()
         );
@@ -75,13 +79,37 @@ class Api
             $this->configuration->getBaseUri()
             . $resource . '?' . $this->httpClient->buildQuery($query)
         );
+    }
 
-        // set payload
+    /**
+     * @param string $method
+     * @param array $params
+     */
+    protected function setPayload($method, array $params)
+    {
         if ('POST' === $method) {
             $this->request->setPayload($this->httpClient->buildQuery($params));
         } elseif (('GET' !== $method) && ('POST' !== $method)) {
             $this->request->setPayload(json_encode($params));
         }
+    }
+
+    /**
+     * @param string $resource
+     * @param string $method
+     * @param array $params
+     * @return Response
+     */
+    public function call($resource, $method = 'GET', array $params = array())
+    {
+        $method = strtoupper($method);
+
+        $this->request->setHeader('Accept', 'application/json');
+        $this->request->setMethod($method);
+
+        $this->setContentType($method);
+        $this->setUri($resource, $method, $params);
+        $this->setPayload($method, $params);
 
         return $this->httpClient->send($this->request);
     }
