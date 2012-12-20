@@ -42,12 +42,12 @@ class Response
     /**
      * Set a header field.
      *
-     * @param string $field
+     * @param string $name
      * @param string $value
      */
-    public function setHeader($field, $value)
+    public function setHeader($name, $value)
     {
-        $this->headers[$field] = $value;
+        $this->headers[$name] = $value;
     }
 
     /**
@@ -81,12 +81,25 @@ class Response
     }
 
     /**
-     * Get the headers.
+     * Get all header fields.
      *
      * @return array
      */
     public function getHeaders()
     {
         return $this->headers;
+    }
+
+    /**
+     * Get a header field.
+     *
+     * @param string $name
+     * @param mixed $default
+     *
+     * @return string
+     */
+    public function getHeader($name, $default = null)
+    {
+        return isset($this->headers[$name]) ? $this->headers[$name] : $default;
     }
 }

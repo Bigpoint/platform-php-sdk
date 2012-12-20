@@ -23,17 +23,39 @@ class CurlClient extends HttpClient
     }
 
     /**
+     * Split a header field into field-name and field-value.
+     *
+     * @param string $headerField
+     *
+     * @return array|false
+     */
+    private function splitHeaderField($headerField)
+    {
+        $pattern = '/(?P<name>[\x21\x22-\x27\x2A\x2B\x2D\x2E\x30-\x39\x41-\x5A\x5D-\x7A\x7C\x7E]+)(?:\x3A{1}\x20?)(?P<value>.*)/';
+        if (1 !== preg_match($pattern, $headerField, $matches)) {
+            return false;
+        }
+        return array(
+            'name' => $matches['name'],
+            'value' => $matches['value'],
+        );
+    }
+
+    /**
      * A callback function specified by CURLOPT_HEADERFUNCTION.
      *
      * @param resource $ch The cURL resource.
-     * @param string $headerLine The header data to be written.
+     * @param string $headerField The header data to be written.
      *
      * @return int The number of bytes written.
      */
-    public function headerCallback($ch, $headerLine)
+    public function headerCallback($ch, $headerField)
     {
-        $this->response->setHeader($headerLine);
-        return strlen($headerLine);
+        $header = $this->splitHeaderField($headerField);
+        if (false !== $header) {
+            $this->response->setHeader($header['name'], $header['value']);
+        }
+        return strlen($headerField);
     }
 
     /**
