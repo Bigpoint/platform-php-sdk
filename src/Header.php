@@ -23,8 +23,8 @@ class Header implements \Countable
             return false;
         }
         return array(
-                'name' => $matches['name'],
-                'value' => $matches['value'],
+            'name' => $matches['name'],
+            'value' => $matches['value'],
         );
     }
 
