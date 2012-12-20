@@ -34,7 +34,7 @@ class Header implements \Countable
      * @param string $name
      * @param string $value
      */
-    public function setHeader($name, $value)
+    public function set($name, $value)
     {
         $this->fields[$name] = $value;
     }
