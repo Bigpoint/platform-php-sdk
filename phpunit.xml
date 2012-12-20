@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit>
+  bootstrap="bootstrap-phpunit.php
+  <testsuites>
+    <testsuite name="PHP SDK">
+      <directory suffix=".php">tests</directory>
+    </testsuite>
+  </testsuites>
+  <logging>
+    <log
+      type="coverage-html"
+      target="../coverage"
+      charset="UTF-8"
+      yui="true"
+      lowUpperBound="35"
+      highLowerBound="70"
+      showUncoveredFiles="true"/>
+  </logging>
+</phpunit>
