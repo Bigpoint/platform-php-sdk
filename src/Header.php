@@ -7,7 +7,7 @@ class Header implements \Countable
     /**
      * @var array
      */
-    private $fields;
+    private $fields = array();
 
     /**
      * Split a header field into field-name and field-value.
@@ -60,6 +60,14 @@ class Header implements \Countable
     public function get($name, $default = null)
     {
         return isset($this->fields[$name]) ? $this->fields[$name] : $default;
+    }
+
+    /**
+     * Clear the fields.
+     */
+    public function flush()
+    {
+        $this->fields = array();
     }
 
     /**
