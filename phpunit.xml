@@ -6,10 +6,15 @@
       <directory suffix=".php">tests</directory>
     </testsuite>
   </testsuites>
+  <filter>
+    <whitelist>
+      <directory>src</directory>
+    </whitelist>
+  </filter>
   <logging>
     <log
       type="coverage-html"
-      target="../coverage"
+      target="../htdocs/coverage"
       charset="UTF-8"
       yui="true"
       lowUpperBound="35"
