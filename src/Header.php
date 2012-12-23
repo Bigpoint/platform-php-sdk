@@ -2,7 +2,7 @@
 
 namespace Bigpoint;
 
-class Header implements \Countable
+class Header implements \Countable, \Iterator
 {
     /**
      * @var array
@@ -34,7 +34,7 @@ class Header implements \Countable
      * @param string $name
      * @param string $value
      */
-    public function set($name, $value)
+    public function setField($name, $value)
     {
         $this->fields[$name] = $value;
     }
@@ -44,7 +44,7 @@ class Header implements \Countable
      *
      * @return array
      */
-    public function getAll()
+    public function getFields()
     {
         return $this->fields;
     }
@@ -57,7 +57,7 @@ class Header implements \Countable
      *
      * @return string
      */
-    public function get($name, $default = null)
+    public function getField($name, $default = null)
     {
         return isset($this->fields[$name]) ? $this->fields[$name] : $default;
     }
@@ -71,12 +71,58 @@ class Header implements \Countable
     }
 
     /**
-     * Return the number of headers.
+     * Return the number of header fields.
      *
      * @return int The number of fields.
      */
     public function count()
     {
         return count($this->fields);
+    }
+
+    /**
+     * Return the current field-value.
+     *
+     * @return string
+     */
+    public function current()
+    {
+        return current($this->fields);
+    }
+
+    /**
+     * Return the current field-name.
+     *
+     * @return string
+     */
+    public function key()
+    {
+        return key($this->fields);
+    }
+
+    /**
+     * Advance the internal field pointer.
+     */
+    public function next()
+    {
+        next($this->fields);
+    }
+
+    /**
+     * Seth the internal pointer to its first field.
+     */
+    public function rewind()
+    {
+        reset($this->fields);
+    }
+
+    /**
+     * Checks if current field position is valid.
+     *
+     * @return bool
+     */
+    public function valid()
+    {
+        return (null !== key($this->fields));
     }
 }

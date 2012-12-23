@@ -20,9 +20,18 @@ class Request
     private $payload;
 
     /**
-     * @var array
+     * @var Header
      */
-    private $headers = array();
+    private $header;
+
+    /**
+     * @param Header $header
+     */
+    public function __construct(
+        Header $header
+    ) {
+        $this->header = $header;
+    }
 
     /**
      * Set the method.
@@ -55,14 +64,14 @@ class Request
     }
 
     /**
-     * Set a header entry.
+     * Set a header field.
      *
      * @param string $name
      * @param string $value
      */
     public function setHeader($name, $value)
     {
-        $this->headers[$name] = $value;
+        $this->header->setField($name, $value);
     }
 
     /**
@@ -73,7 +82,7 @@ class Request
         $this->method = null;
         $this->uri = null;
         $this->payload = null;
-        $this->headers = array();
+        $this->header->flush();
     }
 
     /**
@@ -105,12 +114,12 @@ class Request
     }
 
     /**
-     * Get the headers.
+     * Get the header.
      *
-     * @return array
+     * @return Header
      */
-    public function getHeaders()
+    public function getHeader()
     {
-        return $this->headers;
+        return $this->header;
     }
 }
