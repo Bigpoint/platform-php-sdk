@@ -15,9 +15,18 @@ class Response
     private $content;
 
     /**
-     * @var array
+     * @var Header
      */
-    private $headers = array();
+    private $header;
+
+    /**
+     * @param Header $header
+     */
+    public function __construct(
+        Header $header
+    ) {
+        $this->header = $header;
+    }
 
     /**
      * Set the status code.
@@ -42,12 +51,17 @@ class Response
     /**
      * Set a header field.
      *
-     * @param string $name
-     * @param string $value
+     * @param string $field
      */
-    public function setHeader($name, $value)
+    public function setHeader($field)
     {
-        $this->headers[$name] = $value;
+        $header = $this->header->splitField($field);
+        if (false !== $header) {
+            $this->header->setField(
+                $header['name'],
+                $header['value']
+            );
+        }
     }
 
     /**
@@ -57,7 +71,7 @@ class Response
     {
         $this->statusCode = null;
         $this->content = null;
-        $this->headers = array();
+        $this->header->flush();
     }
 
     /**
@@ -81,25 +95,12 @@ class Response
     }
 
     /**
-     * Get all header fields.
+     * Get the header.
      *
-     * @return array
+     * @return Header
      */
-    public function getHeaders()
+    public function getHeader()
     {
-        return $this->headers;
-    }
-
-    /**
-     * Get a header field.
-     *
-     * @param string $name
-     * @param mixed $default
-     *
-     * @return string
-     */
-    public function getHeader($name, $default = null)
-    {
-        return isset($this->headers[$name]) ? $this->headers[$name] : $default;
+        return $this->header;
     }
 }
