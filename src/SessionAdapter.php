@@ -2,6 +2,9 @@
 
 namespace Bigpoint;
 
+/**
+ * @codeCoverageIgnore
+ */
 class SessionAdapter
 {
     /**
