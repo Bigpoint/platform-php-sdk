@@ -18,7 +18,7 @@ class Header implements \Countable, \Iterator
      */
     public function splitField($field)
     {
-        $pattern = '/(?P<name>[\x21\x22-\x27\x2A\x2B\x2D\x2E\x30-\x39\x41-\x5A\x5D-\x7A\x7C\x7E]+)(?:\x3A{1}\x20?)(?P<value>.*)/';
+        $pattern = '/^(?P<name>[\x21\x22-\x27\x2A\x2B\x2D\x2E\x30-\x39\x41-\x5A\x5D-\x7A\x7C\x7E]+)(?:\x3A{1}\x20?)(?P<value>.*)$/';
         if (1 !== preg_match($pattern, $field, $matches)) {
             return false;
         }
