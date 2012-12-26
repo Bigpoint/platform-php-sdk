@@ -53,8 +53,9 @@ class CurlClient extends HttpClient
 
         $headers = array();
         foreach ($request->getHeader() as $name => $value) {
-            $headers[] = $name . ': ' . $value;
+            $headers[] = $request->getHeader()->joinField($name, $value);
         }
+
         $this->curlAdapter->setOption(
             $ch,
             $this->curlAdapter->getOptConstant('HTTPHEADER'),
@@ -80,7 +81,14 @@ class CurlClient extends HttpClient
         );
 
         $this->response->flush();
-        $this->response->setContent($this->curlAdapter->exec($ch));
+        $content = $this->curlAdapter->exec($ch);
+        if (false === $content) {
+            throw new \RuntimeException(
+                $this->curlAdapter->getError($ch),
+                $this->curlAdapter->getErrno($ch)
+            );
+        }
+        $this->response->setContent($content);
         $this->response->setStatusCode(
             $this->curlAdapter->getInfo(
                 $ch,

@@ -29,6 +29,19 @@ class Header implements \Countable, \Iterator
     }
 
     /**
+     * Join field-name and field-value to a field.
+     *
+     * @param string $name
+     * @param string $value
+     *
+     * @return string
+     */
+    public function joinField($name, $value)
+    {
+        return sprintf('%s: %s', $name, $value);
+    }
+
+    /**
      * Set a header field.
      *
      * @param string $name
