@@ -10,7 +10,8 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
     private $objectUnderTest;
 
     /**
-     * Prepare object under test.
+     * (non-PHPdoc)
+     * @see PHPUnit_Framework_TestCase::setUp()
      */
     protected function setUp()
     {

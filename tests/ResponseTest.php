@@ -15,6 +15,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     private $headerMock;
 
     /**
+     * (non-PHPdoc)
      * @see PHPUnit_Framework_TestCase::setUp()
      */
     public function setUp()
@@ -100,5 +101,4 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame($this->headerMock, $actual);
     }
-
 }
