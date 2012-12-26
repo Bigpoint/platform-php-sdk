@@ -115,6 +115,20 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
      * @param string $name
      * @param string $value
      */
+    public function testJoinField($name, $value)
+    {
+        $expected = sprintf('%s: %s', $name, $value);
+        $actual = $this->objectUnderTest->joinField($name, $value);
+
+        $this->assertSame($expected, $actual);
+    }
+
+    /**
+     * @dataProvider validHeaderFieldsProvider
+     *
+     * @param string $name
+     * @param string $value
+     */
     public function testSetField($name, $value)
     {
         $this->objectUnderTest->setField($name, $value);
