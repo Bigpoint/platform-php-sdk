@@ -6,6 +6,7 @@ This PHP - SDK helps developer to use the platform 2.0
 Example
 -------
 
+```php
 <?php
 
 $config = array(
@@ -20,3 +21,4 @@ $factory = new Bigpoint\Factory();
 $api = $factroy->createApi($config);
 
 $api->call('/me');
+```
