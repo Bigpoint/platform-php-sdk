@@ -52,12 +52,10 @@ class Api
      */
     protected function setContentType($method)
     {
-        if (('GET' === $method) || ('POST' === $method)) {
-            $contentType
-                = 'application/x-www-form-urlencoded;version=' . self::VERSION;
+        if (('GET' === $method) || ('HEAD' === $method) || ('DELETE' === $method) || ('POST' === $method)) {
+            $contentType = 'application/x-www-form-urlencoded;version=' . self::VERSION;
         } else {
-            $contentType
-                = 'application/json;version=' . self::VERSION;
+            $contentType = 'application/json;version=' . self::VERSION;
         }
         $this->request->setHeader('Content-type', $contentType);
     }
@@ -72,7 +70,7 @@ class Api
         $query = array(
             'access_token' => $this->oauth2Client->getAccessToken()
         );
-        if ('GET' === $method) {
+        if (('GET' === $method) || ('HEAD' === $method)) {
             $query = array_merge($query, $params);
         }
         $this->request->setUri(
@@ -89,7 +87,7 @@ class Api
     {
         if ('POST' === $method) {
             $this->request->setPayload($this->httpClient->buildQuery($params));
-        } elseif (('GET' !== $method) && ('POST' !== $method)) {
+        } elseif (('PUT' === $method) && ('PATCH' === $method)) {
             $this->request->setPayload(json_encode($params));
         }
     }
