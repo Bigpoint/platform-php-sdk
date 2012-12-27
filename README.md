@@ -20,5 +20,5 @@ $factory  = new Bigpoint\Factory();
 $api      = $factroy->createApi($config);
 $response = $api->call('/me');
 
-echo $resonse->getContent();
+echo $response->getContent();
 ```
