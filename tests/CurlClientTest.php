@@ -32,7 +32,7 @@ class CurlClientTest extends \PHPUnit_Framework_TestCase
     /**
      * Prepare system under test.
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->headerMock = $this->getMock('Bigpoint\Header');
 

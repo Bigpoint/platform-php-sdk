@@ -18,7 +18,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
      * (non-PHPdoc)
      * @see PHPUnit_Framework_TestCase::setUp()
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->headerMock = $this->getMock('Bigpoint\Header');
 
