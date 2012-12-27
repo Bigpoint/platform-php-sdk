@@ -10,15 +10,15 @@ Example
 <?php
 
 $config = array(
-    'client_id' => 'CLIENTID',
+    'client_id'     => 'CLIENTID',
     'client_secret' => 'CLIENTSECRET',
-    'grant_type' => 'authorization_code',
-    //'grant_type' => 'client_credentials',
+    'grant_type'    => 'authorization_code',
+    //'grant_type'    => 'client_credentials',
 );
 
-$factory = new Bigpoint\Factory();
+$factory  = new Bigpoint\Factory();
+$api      = $factroy->createApi($config);
+$response = $api->call('/me');
 
-$api = $factroy->createApi($config);
-
-$api->call('/me');
+echo $resonse->getContent();
 ```
