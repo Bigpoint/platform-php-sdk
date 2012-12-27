@@ -7,8 +7,7 @@ class Configuration
     /**
      * @var string
      */
-    //const BASE_URI = 'https://api-dev.bigpoint.net/';
-    const BASE_URI = 'http://10.189.175.89:40888/';
+    const BASE_URI = 'https://api-dev.bigpoint.net/';
 
     /**
      * @var Environment
@@ -93,7 +92,7 @@ class Configuration
         if (null === $this->redirectUri) {
             return $this->environment->getCurrentURI();
         } else {
-            $this->redirectUri;
+            return $this->redirectUri;
         }
     }
 }
