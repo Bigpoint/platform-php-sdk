@@ -27,10 +27,7 @@ class Factory
     private function createEnvironment()
     {
         if (null === $this->environment) {
-            $this->environment = new Environment(
-                $_GET,
-                $_SERVER
-            );
+            $this->environment = new Environment($_GET, $_SERVER);
         }
         return $this->environment;
     }
