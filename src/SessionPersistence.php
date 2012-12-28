@@ -38,7 +38,7 @@ class SessionPersistence implements PersistenceInterface
      */
     public function set($key, $value)
     {
-        $_SESSION[$key] = $value;
+        $this->sessionAdapter->set($key, $value);
     }
 
     /**
@@ -47,7 +47,7 @@ class SessionPersistence implements PersistenceInterface
      */
     public function get($key, $default = null)
     {
-        return isset($_SESSION[$key]) ? $_SESSION[$key] : $default;
+        return $this->sessionAdapter->get($key, $default);
     }
 
     /**
@@ -56,9 +56,7 @@ class SessionPersistence implements PersistenceInterface
      */
     public function delete($key)
     {
-        if (true === isset($_SESSION[$key])) {
-            unset($_SESSION[$key]);
-        }
+        $this->sessionAdapter->delete($key);
     }
 
     /**
@@ -67,6 +65,6 @@ class SessionPersistence implements PersistenceInterface
      */
     public function flush()
     {
-        $_SESSION = array();
+        $this->sessionAdapter->flush();
     }
 }
