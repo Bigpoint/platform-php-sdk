@@ -2,34 +2,27 @@
 
 namespace Bigpoint;
 
-class SessionPersistence implements PersistenceInterface
+/**
+ * @codeCoverageIgnore
+ */
+class SessionAdapter implements PersistenceInterface
 {
     /**
-     * @var SessionAdapter
+     * @return string The session id for the current session or the empty string.
      */
-    private $sessionAdapter;
-
-    /**
-     * @param SessionAdapter $sessionAdapter
-     */
-    public function __construct(
-        SessionAdapter $sessionAdapter
-    ) {
-        $this->sessionAdapter = $sessionAdapter;
-
-        $this->initSession();
+    public function id()
+    {
+        return session_id();
     }
 
     /**
      * Start new or resume existing session.
+     *
+     * @return bool TRUE if a session was successfully started, otherwise FALSE.
      */
-    private function initSession()
+    public function start()
     {
-        $sessionId = $this->sessionAdapter->id();
-
-        if (true === empty($sessionId)) {
-            $this->sessionAdapter->start();
-        }
+        return session_start();
     }
 
     /**
