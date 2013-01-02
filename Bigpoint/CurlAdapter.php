@@ -7,6 +7,8 @@ class CurlAdapter
     /**
      * Initialize a cURL session.
      *
+     * @codeCoverageIgnore
+     *
      * @param string $url
      *
      * @return resource|bool Returns a cURL handle on success, FALSE on errors.
@@ -43,11 +45,13 @@ class CurlAdapter
     /**
      * Set an option for a cURL transfer.
      *
+     * @codeCoverageIgnore
+     *
      * @param resource $ch A cURL handle.
      * @param int $option The CURLOPT_XXX option to set.
      * @param mixed $value The value to be set on option.
      *
-     * @return bool Returns TRUE on success or FALSE on failure.
+     * @return bool Return TRUE on success or FALSE on failure.
      */
     public function setOption($ch, $option, $value)
     {
@@ -56,6 +60,8 @@ class CurlAdapter
 
     /**
      * Perform a cURL session.
+     *
+     * @codeCoverageIgnore
      *
      * @param resource $ch A cURL handle.
      *
@@ -69,6 +75,8 @@ class CurlAdapter
     /**
      * Close a cURL session.
      *
+     * @codeCoverageIgnore
+     *
      * @param resource $ch A cURL handle.
      *
      * @return void
@@ -81,11 +89,41 @@ class CurlAdapter
     /**
      * Get information regarding a specific transfer.
      *
+     * @codeCoverageIgnore
+     *
      * @param resource $ch A cURL handle.
      * @param int One of the CURLINFO_XXX constant.
      */
     public function getInfo($ch, $opt = 0)
     {
         return curl_getinfo($ch, $opt);
+    }
+
+    /**
+     * Return a string containing the last error.
+     *
+     * @codeCoverageIgnore
+     *
+     * @param resource $ch A cURL handle.
+     *
+     * @return string Return the error message or ''.
+     */
+    public function getError($ch)
+    {
+        return curl_error($ch);
+    }
+
+    /**
+     * Return the last error number.
+     *
+     * @codeCoverageIgnore
+     *
+     * @param resource $ch A cURL handle.
+     *
+     * @return int Return the error number or 0.
+     */
+    public function getErrno($ch)
+    {
+        return curl_errno($ch);
     }
 }
