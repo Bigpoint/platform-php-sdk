@@ -9,6 +9,9 @@
   <filter>
     <whitelist>
       <directory>Bigpoint</directory>
+      <exclude>
+        <directory>Bigpoint/Tests</directory>
+      </exclude>
     </whitelist>
   </filter>
   <logging>
