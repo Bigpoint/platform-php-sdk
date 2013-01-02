@@ -1,0 +1,3 @@
+phpunit.xml
+coverage/
+vendor/
