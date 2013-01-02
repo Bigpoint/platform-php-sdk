@@ -27,10 +27,7 @@ class Factory
     private function createEnvironment()
     {
         if (null === $this->environment) {
-            $this->environment = new Environment(
-                $_GET,
-                $_SERVER
-            );
+            $this->environment = new Environment($_GET, $_SERVER);
         }
         return $this->environment;
     }
@@ -42,7 +39,9 @@ class Factory
      */
     private function createRequest()
     {
-        return new Request();
+        return new Request(
+            new Header()
+        );
     }
 
     /**
@@ -52,7 +51,9 @@ class Factory
      */
     private function createResponse()
     {
-        return new Response();
+        return new Response(
+            new Header()
+        );
     }
 
     /**
@@ -79,16 +80,6 @@ class Factory
     }
 
     /**
-     * Create a CurlAdapter.
-     *
-     * @return CurlAdapter
-     */
-    private function createCurlAdatper()
-    {
-        return new CurlAdapter();
-    }
-
-    /**
      * Create a HttpClient.
      *
      * @return HttpClient
@@ -96,7 +87,7 @@ class Factory
     private function createHttpClient()
     {
         return new CurlClient(
-            new Response(),
+            $this->createResponse(),
             new CurlAdapter()
         );
     }

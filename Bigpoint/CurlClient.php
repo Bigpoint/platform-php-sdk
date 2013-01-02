@@ -26,14 +26,15 @@ class CurlClient extends HttpClient
      * A callback function specified by CURLOPT_HEADERFUNCTION.
      *
      * @param resource $ch The cURL resource.
-     * @param string $headerLine The header data to be written.
+     * @param string $headerField The header data to be written.
      *
      * @return int The number of bytes written.
      */
-    public function headerCallback($ch, $headerLine)
+    public function headerCallback($ch, $headerField)
     {
-        $this->response->setHeader($headerLine);
-        return strlen($headerLine);
+        $this->response->setHeader($headerField);
+
+        return strlen($headerField);
     }
 
     /**
@@ -51,9 +52,10 @@ class CurlClient extends HttpClient
         );
 
         $headers = array();
-        foreach ($request->getHeaders() as $name => $value) {
-            $headers[] = $name . ': ' . $value;
+        foreach ($request->getHeader() as $name => $value) {
+            $headers[] = $request->getHeader()->joinField($name, $value);
         }
+
         $this->curlAdapter->setOption(
             $ch,
             $this->curlAdapter->getOptConstant('HTTPHEADER'),
@@ -79,7 +81,14 @@ class CurlClient extends HttpClient
         );
 
         $this->response->flush();
-        $this->response->setContent($this->curlAdapter->exec($ch));
+        $content = $this->curlAdapter->exec($ch);
+        if (false === $content) {
+            throw new \RuntimeException(
+                $this->curlAdapter->getError($ch),
+                $this->curlAdapter->getErrno($ch)
+            );
+        }
+        $this->response->setContent($content);
         $this->response->setStatusCode(
             $this->curlAdapter->getInfo(
                 $ch,

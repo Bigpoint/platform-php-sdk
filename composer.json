@@ -1,0 +1,13 @@
+{
+    "name": "bigpoint/php-sdk",
+    "type": "library",
+    "description": "Bigpoint PHP SDK",
+    "keywords": ["bigpoint", "platform", "sdk"],
+    "autoload": {
+        "psr-0": { "Bigpoint": "" }
+    },
+    "require": {
+        "php": ">=5.3.0",
+        "ext-curl": "*" 
+    }
+}
