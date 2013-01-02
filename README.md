@@ -8,6 +8,7 @@ Example
 
 ```php
 <?php
+require 'vendor/autoload.php';
 
 $config = array(
     'client_id'     => 'CLIENTID',
@@ -17,8 +18,12 @@ $config = array(
 );
 
 $factory  = new Bigpoint\Factory();
-$api      = $factroy->createApi($config);
-$response = $api->call('/me');
+$api      = $factory->createApi($config);
+try {
+    $response = $api->call('/me');
+    echo $response->getContent();
+} catch (Exception $e) {
+    echo $e->getMessage();
+}
 
-echo $response->getContent();
 ```
