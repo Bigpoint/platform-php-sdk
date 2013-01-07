@@ -9,7 +9,7 @@ class CurlClient extends HttpClient
      *
      * @var string
      */
-    const CA_ROOT_CERTIFICATES_BUNDLE = '/ca-bundle.crt';
+    const CA_ROOT_CERTIFICATES = '/ca-bundle.crt';
 
     /**
      * @var CurlAdapter
@@ -90,7 +90,7 @@ class CurlClient extends HttpClient
         $this->curlAdapter->setOption(
             $ch,
             $this->curlAdapter->getOptConstant('CAINFO'),
-            __DIR__ . self::CA_ROOT_CERTIFICATES_BUNDLE
+            __DIR__ . self::CA_ROOT_CERTIFICATES
         );
 
         // TODO remove as soon as root certificate is available
