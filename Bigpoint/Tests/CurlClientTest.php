@@ -30,6 +30,11 @@ class CurlClientTest extends \PHPUnit_Framework_TestCase
     private $curlAdapterMock;
 
     /**
+     * @var string
+     */
+    const CA_ROOT_CERTIFICATES = '/ca-bundle.crt';
+
+    /**
      * Prepare system under test.
      */
     protected function setUp()
@@ -246,6 +251,22 @@ class CurlClientTest extends \PHPUnit_Framework_TestCase
                         'headerCallback',
                     )
                 )
+            );
+        $this->curlAdapterMock
+            ->expects($this->at(12))
+            ->method('setOption')
+            ->with(
+                $this->equalTo($ch),
+                $this->equalTo('CAINFO'),
+                $this->stringEndsWith(self::CA_ROOT_CERTIFICATES)
+            );
+        $this->curlAdapterMock
+            ->expects($this->at(14))
+            ->method('setOption')
+            ->with(
+                $this->equalTo($ch),
+                $this->equalTo('SSL_VERIFYPEER'),
+                $this->equalTo(false)
             );
         $this->curlAdapterMock
             ->expects($this->any())
