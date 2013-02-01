@@ -153,7 +153,8 @@ class Oauth2Client
         }
 
         // TODO consider expiration
-        $accessToken = json_decode($response->getContent())->value;
+        // '{"access_token":"[VALUE]","token_type":"bearer","expires_in":43146,"scope":"b a"}'
+        $accessToken = json_decode($response->getContent())->access_token;
         $this->persistence->set(self::ACCESS_TOKEN_KEY, $accessToken);
 
         return $accessToken;
