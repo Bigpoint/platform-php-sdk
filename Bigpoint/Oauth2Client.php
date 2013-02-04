@@ -15,6 +15,11 @@ class Oauth2Client
     const TOKEN_ENDPOINT = 'oauth/token';
 
     /**
+     * @var string
+     */
+    const AUTHORIZATION_ENDPOINT = 'oauth/authorize';
+
+    /**
      * @var Environment
      */
     private $environment;
@@ -158,5 +163,29 @@ class Oauth2Client
         $this->persistence->set(self::ACCESS_TOKEN_KEY, $accessToken);
 
         return $accessToken;
+    }
+
+    /**
+     * Return the Uri to request for an authorization.
+     *
+     * @throws \RuntimeException
+     * @return string
+     */
+    public function getAuthorizationRequestUri()
+    {
+        if ('authorization_code' !== $this->configuration->getGrantType()) {
+            // TODO add message and code
+            throw new \RuntimeException();
+        }
+
+        $query = $this->httpClient->buildQuery(
+            array(
+                'client_id' => $this->configuration->getClientId(),
+                'response_type' => 'code',
+                'redirect_uri' => $this->configuration->getRedirectURI()
+            )
+        );
+
+        return $this->configuration->getBaseUri() . '/' . self::AUTHORIZATION_ENDPOINT . '/' . $query;
     }
 }
