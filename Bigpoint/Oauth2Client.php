@@ -186,6 +186,6 @@ class Oauth2Client
             )
         );
 
-        return $this->configuration->getBaseUri() . '/' . self::AUTHORIZATION_ENDPOINT . '/' . $query;
+        return $this->configuration->getBaseUri() . self::AUTHORIZATION_ENDPOINT . '?' . $query;
     }
 }
