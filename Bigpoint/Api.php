@@ -109,6 +109,17 @@ class Api
         $this->setUri($resource, $method, $params);
         $this->setPayload($method, $params);
 
+        var_dump($this->request);
+
         return $this->httpClient->send($this->request);
+    }
+
+    /**
+     * (non-PHPdoc)
+     * @see Oauth2Client::getAuthorizationRequestUri()
+     */
+    public function getAuthorizationRequestUri()
+    {
+        return $this->oauth2Client->getAuthorizationRequestUri();
     }
 }
