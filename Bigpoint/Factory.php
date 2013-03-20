@@ -80,6 +80,16 @@ class Factory
     }
 
     /**
+     * Create a DateTime.
+     *
+     * @return \DateTime
+     */
+    private function createDateTime()
+    {
+        return new \DateTime();
+    }
+
+    /**
      * Create a HttpClient.
      *
      * @return HttpClient
@@ -118,6 +128,7 @@ class Factory
         return new Oauth2Client(
             $this->createEnvironment(),
             $this->createSessionPersistence(),
+            $this->createDateTime(),
             $this->createHttpClient(),
             $this->createRequest(),
             $this->createConfiguration($config)

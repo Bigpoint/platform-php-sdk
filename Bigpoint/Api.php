@@ -7,7 +7,7 @@ class Api
     /**
      * @var string
      */
-    const VERSION = 'PROTOTYPE';
+    const VERSION = '1.0';
 
     /**
      * @var Oauth2Client
@@ -102,16 +102,20 @@ class Api
     {
         $method = strtoupper($method);
 
-        $this->request->setHeader('Accept', 'application/json');
+        $this->request->setHeader('Accept', 'application/hal+json, application/json');
         $this->request->setMethod($method);
 
         $this->setContentType($method);
         $this->setUri($resource, $method, $params);
         $this->setPayload($method, $params);
 
-        var_dump($this->request);
+        $reponse = $this->httpClient->send($this->request);
 
-        return $this->httpClient->send($this->request);
+        if ('403' == $reponse->getStatusCode()) {
+            $this->oauth2Client->flushAccessToken();
+        }
+
+        return $reponse;
     }
 
     /**
