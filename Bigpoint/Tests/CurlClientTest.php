@@ -261,14 +261,6 @@ class CurlClientTest extends \PHPUnit_Framework_TestCase
                 $this->stringEndsWith(self::CA_ROOT_CERTIFICATES)
             );
         $this->curlAdapterMock
-            ->expects($this->at(14))
-            ->method('setOption')
-            ->with(
-                $this->equalTo($ch),
-                $this->equalTo('SSL_VERIFYPEER'),
-                $this->equalTo(false)
-            );
-        $this->curlAdapterMock
             ->expects($this->any())
             ->method('getInfoConstant')
             ->will($this->returnArgument(0));
