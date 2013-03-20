@@ -5,9 +5,19 @@ namespace Bigpoint;
 class Oauth2Client
 {
     /**
+     *  @var string
+     */
+    const GRAND_TYPE_KEY = 'grant_type';
+
+    /**
      * @var string
      */
     const ACCESS_TOKEN_KEY = 'access_token';
+
+    /**
+     * @var string
+     */
+    const EXPIRE_TIME_KEY = 'expire_time';
 
     /**
      * @var string
@@ -28,6 +38,11 @@ class Oauth2Client
      * @var PersistenceInterface
      */
     private $persistence;
+
+    /**
+     * @var \DateTime
+     */
+    private $dateTime;
 
     /**
      * @var HttpClient
@@ -54,12 +69,14 @@ class Oauth2Client
     public function __construct(
         Environment $environment,
         PersistenceInterface $persistence,
+        \DateTime $dateTime,
         HttpClient $httpClient,
         Request $request,
         Configuration $configuration
     ) {
         $this->environment = $environment;
         $this->persistence = $persistence;
+        $this->dateTime = $dateTime;
         $this->httpClient = $httpClient;
         $this->request = $request;
         $this->configuration = $configuration;
@@ -133,36 +150,81 @@ class Oauth2Client
      *
      * @return string|null
      */
-    public function getAccessToken()
+    private function getAccessTokenFromPersistence()
     {
         $accessToken = $this->persistence->get(self::ACCESS_TOKEN_KEY, null);
 
+        if (null === $accessToken) {
+            return null;
+        }
+
+        $expireTime = $this->persistence->get(self::EXPIRE_TIME_KEY, null);
+        if ($expireTime < $this->dateTime->getTimestamp()) {
+            $this->flushAccessToken();
+            return null;
+        }
+
+        return $accessToken;
+    }
+
+    /**
+     * @param Response $response
+     * @return string
+     */
+    private function setAccessTokenToPersistence(Response $response)
+    {
+        // '{"access_token":"[VALUE]","token_type":"bearer","expires_in":43146,"scope":"b a"}'
+        $content = json_decode($response->getContent());
+
+        $expireTime = $this->dateTime->getTimestamp() + $content->expires_in;
+
+        $this->persistence->set(self::ACCESS_TOKEN_KEY, $content->access_token);
+        $this->persistence->set(self::EXPIRE_TIME_KEY, $expireTime);
+        $this->persistence->set(self::GRAND_TYPE_KEY, $this->configuration->getGrantType());
+
+        return $content->access_token;
+    }
+
+    /**
+     * Return an access token.
+     *
+     * @throws \RuntimeException
+     * @return string|null
+     */
+    public function getAccessToken()
+    {
+        $accessToken = $this->getAccessTokenFromPersistence();
+        $grandType = $this->configuration->getGrantType();
+
         if (null !== $accessToken) {
+            if ($grandType !== $this->persistence->get(self::GRAND_TYPE_KEY, null)) {
+                throw new \RuntimeException('grand_type switching not supported');
+            }
             return $accessToken;
         }
 
-        if ('authorization_code' === $this->configuration->getGrantType()) {
+        if ('authorization_code' === $grandType) {
             $code = $this->environment->getGetParam('code', null);
             if (null === $code) {
                 return null;
             }
             $response = $this->requestAccessTokenByAuthorizationCode($code);
-        } elseif ('client_credentials' === $this->configuration->getGrantType()) {
+        } elseif ('client_credentials' === $grandType) {
             $response = $this->requestAccessTokenByClientCredentials();
         } else {
-            return null;
+            throw new \RuntimeException('invalid grand_type configured');
         }
 
         if ((null === $response) || (200 != $response->getStatusCode())) {
             return null;
         }
 
-        // TODO consider expiration
-        // '{"access_token":"[VALUE]","token_type":"bearer","expires_in":43146,"scope":"b a"}'
-        $accessToken = json_decode($response->getContent())->access_token;
-        $this->persistence->set(self::ACCESS_TOKEN_KEY, $accessToken);
+        return $this->setAccessTokenToPersistence($response);
+    }
 
-        return $accessToken;
+    public function flushAccessToken()
+    {
+        $this->persistence->flush();
     }
 
     /**
@@ -174,8 +236,7 @@ class Oauth2Client
     public function getAuthorizationRequestUri()
     {
         if ('authorization_code' !== $this->configuration->getGrantType()) {
-            // TODO add message and code
-            throw new \RuntimeException();
+            throw new \RuntimeException('grand_type must be equal to authorization_code');
         }
 
         $query = $this->httpClient->buildQuery(
