@@ -93,13 +93,6 @@ class CurlClient extends HttpClient
             __DIR__ . self::CA_ROOT_CERTIFICATES
         );
 
-        // TODO remove as soon as root certificate is available
-        $this->curlAdapter->setOption(
-            $ch,
-            $this->curlAdapter->getOptConstant('SSL_VERIFYPEER'),
-            false
-        );
-
         $this->response->flush();
         $content = $this->curlAdapter->exec($ch);
         if (false === $content) {
