@@ -7,7 +7,7 @@ class Api
     /**
      * @var string
      */
-    const VERSION = '1.0';
+    const VERSION = '1.0.0';
 
     /**
      * @var Oauth2Client
@@ -116,6 +116,19 @@ class Api
         }
 
         return $reponse;
+    }
+
+    /**
+     * @todo reduce additional call
+     * @return null|int The unique user identifier.
+     */
+    public function getUser()
+    {
+        $response = $this->call('me');
+        if ('200' == $response->getStatusCode()) {
+            return json_decode($response->getContent())->entity_id;
+        }
+        return null;
     }
 
     /**
