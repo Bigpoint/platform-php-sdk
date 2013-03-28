@@ -20,10 +20,18 @@ $config = array(
 $factory  = new Bigpoint\Factory();
 $api      = $factory->createApi($config);
 try {
-    $response = $api->call('/me');
+    $$response = $api->call('/me');
     echo $response->getContent();
 } catch (Exception $e) {
     echo $e->getMessage();
 }
 
+```
+
+The URI at which a request for an authorization will be serviced
+
+```
+<?php
+// ...
+$api->getAuthorizationRequestUri();
 ```

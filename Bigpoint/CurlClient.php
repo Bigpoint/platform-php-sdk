@@ -5,6 +5,13 @@ namespace Bigpoint;
 class CurlClient extends HttpClient
 {
     /**
+     * Bundle of CA Root Certificates.
+     *
+     * @var string
+     */
+    const CA_ROOT_CERTIFICATES = '/ca-bundle.crt';
+
+    /**
      * @var CurlAdapter
      */
     private $curlAdapter;
@@ -78,6 +85,12 @@ class CurlClient extends HttpClient
             $ch,
             $this->curlAdapter->getOptConstant('HEADERFUNCTION'),
             array($this, 'headerCallback')
+        );
+
+        $this->curlAdapter->setOption(
+            $ch,
+            $this->curlAdapter->getOptConstant('CAINFO'),
+            __DIR__ . self::CA_ROOT_CERTIFICATES
         );
 
         $this->response->flush();
