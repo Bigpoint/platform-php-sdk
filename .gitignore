@@ -1,3 +1,7 @@
 phpunit.xml
 coverage/
 vendor/
+
+.buildpath
+.project
+.settings/
