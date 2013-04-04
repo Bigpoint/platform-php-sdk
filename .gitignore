@@ -5,3 +5,6 @@ vendor/
 .buildpath
 .project
 .settings/
+Bigpoint/Configuration.php
+Bigpoint/Tests/ConfigurationTest.php
+README.md
