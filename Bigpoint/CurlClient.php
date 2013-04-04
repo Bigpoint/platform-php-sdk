@@ -21,6 +21,7 @@ class CurlClient extends HttpClient
     /**
      * Bundle of CA Root Certificates.
      *
+     * @link http://curl.haxx.se/docs/caextract.html
      * @var string
      */
     const CA_ROOT_CERTIFICATES = '/ca-bundle.crt';
