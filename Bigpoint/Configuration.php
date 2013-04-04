@@ -21,7 +21,7 @@ class Configuration
     /**
      * @var string
      */
-    const BASE_URI = 'https://staging-api.bigpoint.com/';
+    const BASE_URI = 'https://api.bigpoint.com/';
 
     /**
      * @var Environment
