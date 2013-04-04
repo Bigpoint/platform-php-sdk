@@ -31,7 +31,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     /**
      * @var string
      */
-    const BASE_URI = 'https://staging-api.bigpoint.com/';
+    const BASE_URI = 'https://api.bigpoint.com/';
 
     /**
      * @var string
