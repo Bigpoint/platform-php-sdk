@@ -49,3 +49,13 @@ phpunit
 ```
 
 The coverage report will generated to base directory/coverage.
+
+
+Travis CI
+---------
+
+The cookbook includes a configuration for [Travis CI](https://travis-ci.org) that
+will run phpunit each time changes are pushed to GitHub. Simply enable Travis
+for your GitHub repository to get free continuous integration.
+
+[![Build Status](https://api.travis-ci.org/Bigpoint/platform-php-sdk.png)](https://travis-ci.org/Bigpoint/platform-php-sdk)
