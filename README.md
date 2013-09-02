@@ -15,6 +15,7 @@ $config = array(
     'client_secret' => 'CLIENTSECRET',
     'grant_type'    => 'authorization_code',
     //'grant_type'    => 'client_credentials',
+    'redirect_uri'  => 'http://localhost', // optional, otherwise the current URI will used
 );
 
 $factory  = new Bigpoint\Factory();
@@ -50,6 +51,7 @@ phpunit
 
 The coverage report will generated to base directory/coverage.
 
+The Xdebug extension is required otherwise no code coverage will be generated.
 
 Travis CI
 ---------

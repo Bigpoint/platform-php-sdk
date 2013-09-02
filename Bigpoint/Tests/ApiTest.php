@@ -44,6 +44,11 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     private $configurationMock;
 
     /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $responseMock;
+
+    /**
      * (non-PHPdoc)
      * @see PHPUnit_Framework_TestCase::setUp()
      */
@@ -76,6 +81,75 @@ class ApiTest extends \PHPUnit_Framework_TestCase
             $this->requestMock,
             $this->configurationMock
         );
+
+        $this->responseMock = $this->getMockBuilder('Bigpoint\Response')
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
+    public function testGetUser()
+    {
+        $expected = 42;
+
+        $content = json_encode(array('entity_id' => $expected));
+        $this->responseMock
+            ->expects($this->any())
+            ->method('getStatusCode')
+            ->will($this->returnValue('200'));
+        $this->responseMock
+            ->expects($this->any())
+            ->method('getContent')
+            ->will($this->returnValue($content));
+        $this->httpClientMock
+            ->expects($this->any())
+            ->method('send')
+            ->with($this->equalTo($this->requestMock))
+            ->will($this->returnValue($this->responseMock));
+
+        $actual = $this->objectUnderTest->getUser();
+
+        $this->assertSame($expected, $actual);
+    }
+
+    /**
+     * Return a few of HTTP response codes which differ from 200.
+     *
+     * @return array
+     */
+    public function noneOkResponseCodesProvider()
+    {
+        return array(
+            array('204'),
+            array('401'),
+            array('403'),
+            array('500'),
+            array('502'),
+        );
+    }
+
+    /**
+     * @dataProvider noneOkResponseCodesProvider
+     */
+    public function testGetUserWithFaultyResponse($responseCode)
+    {
+        $expected = null;
+
+        $this->responseMock
+            ->expects($this->any())
+            ->method('getStatusCode')
+            ->will($this->returnValue($responseCode));
+        $this->responseMock
+            ->expects($this->never())
+            ->method('getContent');
+        $this->httpClientMock
+            ->expects($this->any())
+            ->method('send')
+            ->with($this->equalTo($this->requestMock))
+            ->will($this->returnValue($this->responseMock));
+
+        $actual = $this->objectUnderTest->getUser();
+
+        $this->assertSame($expected, $actual);
     }
 
     public function testGetAuthorizationRequestUri()
