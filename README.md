@@ -5,6 +5,7 @@ This PHP - SDK helps developer to use an Oauth2 secured platform.
 
 [![Build Status](https://api.travis-ci.org/Bigpoint/platform-php-sdk.png)](https://travis-ci.org/Bigpoint/platform-php-sdk)
 [![Coverage Status](https://coveralls.io/repos/Bigpoint/platform-php-sdk/badge.png)](https://coveralls.io/r/Bigpoint/platform-php-sdk)
+[![Dependency Status](https://www.versioneye.com/user/projects/5225fbae632bac657f000663/badge.png)](https://www.versioneye.com/user/projects/5225fbae632bac657f000663)
 
 Example
 -------
