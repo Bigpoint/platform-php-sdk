@@ -1,6 +1,10 @@
 phpunit.xml
 coverage/
+build/
 vendor/
+
+composer.lock
+composer.phar
 
 .buildpath
 .project
