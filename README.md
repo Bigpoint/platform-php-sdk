@@ -3,6 +3,10 @@ PHP - SDK
 
 This PHP - SDK helps developer to use an Oauth2 secured platform.
 
+[![Build Status](https://api.travis-ci.org/Bigpoint/platform-php-sdk.png)](https://travis-ci.org/Bigpoint/platform-php-sdk)
+[![Coverage Status](https://coveralls.io/repos/Bigpoint/platform-php-sdk/badge.png)](https://coveralls.io/r/Bigpoint/platform-php-sdk)
+[![Dependency Status](https://www.versioneye.com/user/projects/5225fbae632bac657f000663/badge.png)](https://www.versioneye.com/user/projects/5225fbae632bac657f000663)
+
 Example
 -------
 
@@ -15,6 +19,7 @@ $config = array(
     'client_secret' => 'CLIENTSECRET',
     'grant_type'    => 'authorization_code',
     //'grant_type'    => 'client_credentials',
+    'redirect_uri'  => 'http://localhost', // optional, otherwise the current URI will used
 );
 
 $factory  = new Bigpoint\Factory();
@@ -50,12 +55,4 @@ phpunit
 
 The coverage report will generated to base directory/coverage.
 
-
-Travis CI
----------
-
-The cookbook includes a configuration for [Travis CI](https://travis-ci.org) that
-will run phpunit each time changes are pushed to GitHub. Simply enable Travis
-for your GitHub repository to get free continuous integration.
-
-[![Build Status](https://api.travis-ci.org/Bigpoint/platform-php-sdk.png)](https://travis-ci.org/Bigpoint/platform-php-sdk)
+The Xdebug extension is required otherwise no code coverage will be generated.
