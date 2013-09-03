@@ -125,7 +125,7 @@ class Api
 
         $reponse = $this->httpClient->send($this->request);
 
-        if ('403' == $reponse->getStatusCode()) {
+        if ('401' == $reponse->getStatusCode()) {
             $this->oauth2Client->flushAccessToken();
         }
 
